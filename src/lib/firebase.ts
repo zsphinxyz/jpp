@@ -1,7 +1,8 @@
 import { getApps, initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+
 const firebaseConfig = {
-  apiKey: "AIzaSyChDGQ5rN19WlZnKUK5c0BAgKGEU-c3bz4",
+  apiKey: process.env.FIREBASE_APIKEY,
   authDomain: "zjppapp.firebaseapp.com",
   projectId: "zjppapp",
   storageBucket: "zjppapp.appspot.com",
