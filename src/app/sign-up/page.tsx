@@ -10,7 +10,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
-import { signUpAction } from "@/lib/actions"
 import Link from "next/link"
 import { FcGoogle } from "react-icons/fc";
 
@@ -36,7 +35,7 @@ function SignUp() {
             <Separator className="flex-1" />
           </div>
 
-          <form action={signUpAction}>
+          <form>
             <div className="space-y-4">
 
               <div className="flex flex-col gap-2">
