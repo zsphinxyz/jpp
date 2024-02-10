@@ -9,7 +9,7 @@ const font = Roboto({
 export default function Home() {
   return (
     <main className={cn(font.className,"flex min-h-screen flex-col items-center justify-between")}>
-      <h1 className=" text-2xl font-extrabold">Home Page Here.</h1>
+      <h1 className=" text-2xl font-extrabold">Home Page Here</h1>
     </main>
   );
 }
