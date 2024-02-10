@@ -6,7 +6,11 @@ import { Button } from "./ui/button"
 import { useState } from "react"
 
 export function ModeToggle() {
-  const [dark, setDark] = useState(localStorage.getItem('theme') == 'dark' ? true : false)
+  let LSValue;
+  if (typeof window !== 'undefined') {
+    LSValue = window.localStorage.getItem('theme') == 'dark' ? true : false;
+  }
+  const [dark, setDark] = useState(LSValue)
   const { setTheme } = useTheme()
 
   function handleClick() {
