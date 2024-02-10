@@ -19,7 +19,7 @@ function Login() {
   const SIGNINURL = '/profile';
   const SIGNOUTURL = '/'
   const session = useSession();
-  console.log(session)
+  // console.log(session)
   return (
       <div className="flex items-center justify-center">
         {

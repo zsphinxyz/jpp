@@ -1,13 +1,12 @@
 "use client"
 
-import * as React from "react"
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons"
 import { useTheme } from "next-themes"
-import { cn } from "@/lib/utils"
 import { Button } from "./ui/button"
+import { useState } from "react"
 
 export function ModeToggle() {
-  const [dark, setDark] = React.useState(true)
+  const [dark, setDark] = useState(localStorage.getItem('theme') == 'dark' ? true : false)
   const { setTheme } = useTheme()
 
   function handleClick() {
