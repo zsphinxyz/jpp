@@ -4,6 +4,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Nav from "@/components/Nav";
 import { SessionProvider } from "next-auth/react";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,8 +30,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Nav />
-            {children}
+            <Suspense fallback={<Loading />}>
+              <Nav />
+              {children}
+            </Suspense>
           </ThemeProvider>
         </SessionProvider>
       </body>

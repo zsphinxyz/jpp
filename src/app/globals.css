@@ -32,7 +32,7 @@
     --input: 240 5.9% 90%;
     --ring: 240 10% 3.9%;
  
-    --radius: 0.5rem;
+    --radius: 0.25rem;
   }
  
   .dark {
@@ -73,4 +73,18 @@
   body {
     @apply bg-background text-foreground;
   }
+  img{
+    @apply select-none;
+  }
+  .header{
+    @apply text-2xl font-bold text-foreground;
+  }
 }
+
+.my-config {
+  --darkmode: 0;
+  --h-accent: 223;
+  --s-accent: 100%;
+  --l-accent: 61%;
+}
+

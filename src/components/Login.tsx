@@ -14,19 +14,24 @@ import {
 } from "@/components/ui/dropdown-menu"
 import Link from 'next/link';
 
+const SIGNINURL = '/profile';
+const SIGNOUTURL = '/role'
 
 function Login() {
-  const SIGNINURL = '/profile';
-  const SIGNOUTURL = '/'
   const session = useSession();
-  // console.log(session)
+
+  async function handleLogin() {
+    signIn('google', {callbackUrl: SIGNINURL})
+  }
+  
+  // console.log(session.data?.user)
   return (
       <div className="flex items-center justify-center">
         {
           !session || session.status == 'unauthenticated' ? 
           <Button 
             className='bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-400 dark:hover:bg-emerald-500  transition-all font-bold'
-            onClick={() => (signIn('google', {callbackUrl: SIGNINURL})) }
+            onClick={handleLogin}
           >
             Login
           </Button>
@@ -43,12 +48,15 @@ function Login() {
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
-                      <Link href="/profile" className='w-full'>Profile</Link>
+                      <Link href="/profile" prefetch={true} className='w-full'>Profile</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                      <Link href="/dashboard" className='w-full'>Dashboard</Link>
+                      <Link href="/dashboard" prefetch={true} className='w-full'>Dashboard</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>Team</DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href='/explore' prefetch={true} className='w-full'>Explore</Link>
+                    </DropdownMenuItem>
+
                     <DropdownMenuItem>
                       <Button variant='secondary' size='sm' onClick={() => signOut({callbackUrl: SIGNOUTURL})} className='w-full'>
                         Log Out

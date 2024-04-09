@@ -1,7 +1,4 @@
-import { FirestoreAdapter } from "@auth/firebase-adapter";
 import type { NextAuthConfig } from "next-auth";
-// import Google from "next-auth/providers/google";
-import { firestore } from "./lib/firestore";
 import Google from "@auth/core/providers/google"
 
 export default {
@@ -15,9 +12,14 @@ export default {
           access_type: "offline",
           response_type: "code"
         }
-      }
+      },
+      // profile(profile) {
+      //   console.log(profile)
+      //   return {role: 'user', ...profile}
+      // }
     }),
+    
   ],
   session: {strategy: 'jwt'},
-  // adapter: FirestoreAdapter(firestore),
+
 } satisfies NextAuthConfig
