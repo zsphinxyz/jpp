@@ -21,5 +21,6 @@ export default {
     
   ],
   session: {strategy: 'jwt'},
+  trustHost: true,
 
 } satisfies NextAuthConfig
