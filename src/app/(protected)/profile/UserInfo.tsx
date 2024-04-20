@@ -15,7 +15,7 @@ export default async function UserInfo() {
     <section>
     {
       Object.entries(data).map( (i:any) => (
-        <p className="flex"> <span className="basis-32">{i[0]}</span> <span className="basis-32">{i[1].toString()}</span> </p>
+        <p className="flex" key={i[0]}> <span className="basis-32">{i[0]}</span> <span className="basis-32">{i[1].toString()}</span> </p>
       ))
     } 
     </section>
