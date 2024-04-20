@@ -15,12 +15,28 @@ import { Textarea } from "@/components/ui/textarea"
 import { IoInformationCircle } from "react-icons/io5";
 import Uploader from '@/components/uploader'
 import UploadcareImage from '@uploadcare/nextjs-loader';
+import { collection, doc, getDoc, getDocs, query, setDoc } from "firebase/firestore"
+import { db } from "@/lib/firebase"
+import { useRouter } from "next/navigation"
 
 
-function Candidate() {
-  const session = useSession()
-  // console.log(session)
+export default function Candidate() {
+  const session = useSession();
+  const router = useRouter()
+  const [dbdata, setDbdata] = useState<any>()
 
+
+  async function getDataFromDb() {
+    const docRef = doc(db, 'profile', '5WrNx81gijmQIyyrKpRb');
+    const docSnap = await getDoc(docRef)
+    const data = docSnap.data()
+    console.log('Data', data)
+    setDbdata(data)
+    return data
+  }
+
+  console.log('dbdata', dbdata)
+  
   const form = useForm<TCandidateSchema>({
     resolver: zodResolver(candidateSchema),
     defaultValues: {
@@ -31,16 +47,17 @@ function Candidate() {
       address: '',
       experience: '',
       degree: '',
-      about: '',
-      resume: undefined,
+      // about: '',
+      // resume: undefined,
     }
   });
 
-  const fileRef = form.register("resume");
-
-  function onSubmit(values: TCandidateSchema) {
+  async function onSubmit(values: TCandidateSchema) {
     console.log(values);
+    await setDoc(doc(db, 'profile', '5WrNx81gijmQIyyrKpRb'), values, {merge: true})
+    router.push('/profile')
   }
+
 
   return (
     <section>
@@ -186,7 +203,7 @@ function Candidate() {
                 )}
               />
 
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="about"
                 render={({ field }) => (
@@ -198,23 +215,22 @@ function Candidate() {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
               
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="resume"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem onChange={field.onChange}>
                     <FormLabel>Resume <span className="text-xs text-muted-foreground">PDF file</span></FormLabel>
                     <FormControl>
                       <Input type="file" placeholder="Upload your Resume" {...fileRef} />
-                      {/* <input type="file" {...field} /> */}
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
-              />
-
+              /> */}
+                              
               <Button type="submit" className="w-full mt-2">Submit</Button>
             </form>
           </Form>  
@@ -227,5 +243,3 @@ function Candidate() {
     </section>
   )
 }
-
-export default Candidate

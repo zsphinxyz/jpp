@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import UserInfo from "./UserInfo";
 
 
 export default async function Profile() {
@@ -17,11 +18,7 @@ export default async function Profile() {
   const user = session ? session.user : {}
   return (
     <section className="max-w-7xl mx-auto">
-      <pre>
-        {
-          JSON.stringify(session, null, 2)
-        }
-      </pre>
+
       <div className="flex w-full h-screen max-w-7xl mx-auto">
 
 
@@ -30,7 +27,7 @@ export default async function Profile() {
         <div className="w-full p-3">
 
           <div className="flex gap-2 items-center">
-            <Image src={user?.image!} width={150} height={150} alt='profile' className="object-cover border-muted border-2 bg-muted" />
+            <Image src={user?.image!} priority width={150} height={150} alt='profile' className="object-cover border-muted border-2 bg-muted" />
             <div className="flex gap-2 flex-col">
               <h1 className="text-5xl font-bold">{user?.name}
                 <span className="text-lg text-muted-foreground block mt-1 font-normal">{user?.email}</span></h1>
@@ -39,9 +36,11 @@ export default async function Profile() {
           </div>
 
           {/* Format CV */}
-          <div className="py-80 text-center bg-muted my-3">
+          {/* <div className="py-80 text-center bg-muted my-3">
             TODO Markdown Editor and Viewer
-          </div>
+          </div> */}
+
+          <UserInfo />
 
         </div>
 

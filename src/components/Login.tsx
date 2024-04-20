@@ -20,9 +20,9 @@ const SIGNOUTURL = '/role'
 function Login() {
   const session = useSession();
 
-  async function handleLogin() {
-    signIn('google', {callbackUrl: SIGNINURL})
-  }
+  // async function handleLogin() {
+  //   signIn('google', {callbackUrl: SIGNINURL})
+  // }
   
   // console.log(session.data?.user)
   return (
@@ -31,13 +31,14 @@ function Login() {
           !session || session.status == 'unauthenticated' ? 
           <Button 
             className='bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-400 dark:hover:bg-emerald-500  transition-all font-bold'
-            onClick={handleLogin}
           >
-            Login
+            <Link href='/sign-in'>
+              Login
+            </Link>
           </Button>
           :
             session.status == 'loading' ?
-              <div className='w-8 h-8 bg-muted border-foreground border-2 rounded-full' />
+              <div className='w-8 h-8 bg-muted border-foreground border-2 rounded-full animate-pings' />
               :
               <>
                 <DropdownMenu>

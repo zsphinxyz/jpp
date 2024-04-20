@@ -1,4 +1,4 @@
 export const publicRoutes = ["/",'/explore'];
 
 export const apiRoutes = '/api/auth';
-export const authRoutes = ['/sign-in']
+export const authRoutes = ['/sign-in', 'role']

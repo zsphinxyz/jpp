@@ -12,16 +12,16 @@ export const { handlers: { GET, POST }, auth, signIn } = NextAuth({
   // debug: true,
 
   callbacks: {
-    async jwt({token}) {
-      token.uid = token.sub
+    async jwt({token}:any) {
+      token.id = token.sub
       token.role = 'user'
       return token
     },
 
-    async session({session, token}){
+    async session({session, token}:any){
       if (session.user) {
         // @ts-ignore
-        session.user.uid = token.uid
+        session.user.id = token.id
         // @ts-ignore
         session.user.role = 'user'
       }
@@ -29,11 +29,12 @@ export const { handlers: { GET, POST }, auth, signIn } = NextAuth({
       return session
     },
 
-    async signIn({profile}) {
+    async signIn({profile}:any) {
       console.log(profile)
       return true
     }
   },
+
   events:{
     async updateUser() {
       

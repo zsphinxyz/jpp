@@ -15,14 +15,14 @@ import Link from "next/link"
 function Employer() {
   return (
     <section>
-        <Card className="shadow-sm shadow-muted min-w-[400px]">
+        <Card className="shadow-sm shadow-muted w-[400px] mx-auto">
         <CardHeader>
           <CardTitle className="text-center text-xl font-extrabold">Employer</CardTitle>
-          <CardDescription className="text-center">Create an account with Google or with Email.</CardDescription>
+          <CardDescription className="text-center">Enter your infos</CardDescription>
         </CardHeader>
         <CardContent>
           
-          <form>
+          {/* <form className="w-full">
             <div className="space-y-4">
 
               <div className="flex flex-col gap-2">
@@ -53,7 +53,7 @@ function Employer() {
               </div>
 
             </div>
-          </form>
+          </form> */}
 
         </CardContent>
         <CardFooter className="text-sm text-center w-full flex justify-center">
