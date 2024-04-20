@@ -29,17 +29,12 @@ export const { handlers: { GET, POST }, auth, signIn } = NextAuth({
       return session
     },
 
-    async signIn({profile}:any) {
-      console.log(profile)
-      return true
-    }
+    // async signIn({profile}:any) {
+    //   console.log(profile)
+    //   return true
+    // }
   },
 
-  events:{
-    async updateUser() {
-      
-    }
-  },
   pages: {
     signIn: '/sign-in',
   }
