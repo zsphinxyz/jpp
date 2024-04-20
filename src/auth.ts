@@ -8,7 +8,6 @@ export const { handlers: { GET, POST }, auth, signIn } = NextAuth({
   secret: 'LlKq6ZtYbr+hTC073mAmAh9/h2HwMfsFo4hrfCx5mLg=',
   ...authConfig,
   adapter: FirestoreAdapter(firestore),
-  trustHost: true,
 
   // debug: true,
 
