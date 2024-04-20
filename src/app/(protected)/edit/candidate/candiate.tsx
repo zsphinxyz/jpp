@@ -23,19 +23,19 @@ import { useRouter } from "next/navigation"
 export default function Candidate() {
   const session = useSession();
   const router = useRouter()
-  const [dbdata, setDbdata] = useState<any>()
+  // const [dbdata, setDbdata] = useState<any>()
 
 
-  async function getDataFromDb() {
-    const docRef = doc(db, 'profile', '5WrNx81gijmQIyyrKpRb');
-    const docSnap = await getDoc(docRef)
-    const data = docSnap.data()
-    console.log('Data', data)
-    setDbdata(data)
-    return data
-  }
+  // async function getDataFromDb() {
+  //   const docRef = doc(db, 'profile', '5WrNx81gijmQIyyrKpRb');
+  //   const docSnap = await getDoc(docRef)
+  //   const data = docSnap.data()
+  //   console.log('Data', data)
+  //   setDbdata(data)
+  //   return data
+  // }
 
-  console.log('dbdata', dbdata)
+  // console.log('dbdata', dbdata)
   
   const form = useForm<TCandidateSchema>({
     resolver: zodResolver(candidateSchema),
