@@ -21,6 +21,7 @@ export const candidateSchema = z.object({
     address: z.string().optional(),
     degree: z.string().optional(),
     experience: z.string().optional(),
+    tag: z.string().optional(),
     // about: z.string().optional(),
     // resume: z.object({
     //     file: z.instanceof(File).optional(),

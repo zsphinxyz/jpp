@@ -21,12 +21,12 @@ function Role() {
   const session = useSession()
   const user = session?.data?.user
 
-  const userID = '5WrNx81gijmQIyyrKpRb'
+  const userID = session?.data?.user?.id!
 
   useEffect(()=>{
 
     async function getData() {  
-      const docRef = doc(db, 'users', userID); //5WrNx81gijmQIyyrKpRb
+      const docRef = doc(db, 'users', userID);
       const docSnap = await getDoc(docRef)
       const data = docSnap.data()
       return data

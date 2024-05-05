@@ -8,11 +8,10 @@ const font = Roboto({
 
 export default function Home() {
   return (
-    <main className={cn(font.className,"flex min-h-screen flex-col items-center justify-between")}>
+    <main className={cn(font.className,"flex scroll-smooth min-h-screen flex-col items-center justify-between")}>
       <h1 className=" header">Header</h1>
-      <section>
-        
-      </section>
+      <section className='scroll-smooth'>
+ </section>
     </main>
   );
 }

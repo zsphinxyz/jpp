@@ -18,46 +18,64 @@ import UploadcareImage from '@uploadcare/nextjs-loader';
 import { collection, doc, getDoc, getDocs, query, setDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { useRouter } from "next/navigation"
+import { DocumentData } from "firebase-admin/firestore"
 
 
 export default function Candidate() {
   const session = useSession();
+  // const user = session.data?.user
   const router = useRouter()
-  // const [dbdata, setDbdata] = useState<any>()
 
-
-  // async function getDataFromDb() {
-  //   const docRef = doc(db, 'profile', '5WrNx81gijmQIyyrKpRb');
-  //   const docSnap = await getDoc(docRef)
-  //   const data = docSnap.data()
-  //   console.log('Data', data)
-  //   setDbdata(data)
-  //   return data
-  // }
-
-  // console.log('dbdata', dbdata)
-  
   const form = useForm<TCandidateSchema>({
     resolver: zodResolver(candidateSchema),
     defaultValues: {
       name: '',
       email: '',
       dob: '',
+      gender: 'male',
       phone: '',
       address: '',
-      experience: '',
       degree: '',
-      // about: '',
-      // resume: undefined,
+      experience: '',
+      tag: '',
     }
   });
+  
+  useEffect(() => {
+
+    async function getDataFromDb() {
+
+      const docRef = doc(db, 'profile', '5WrNx81gijmQIyyrKpRb');
+      const docSnap = await getDoc(docRef)
+      let data = docSnap.data() as TCandidateSchema
+
+      form.setValue('name', data?.name!)
+      form.setValue('email', data?.email!)
+      form.setValue('dob', data?.dob!)
+      form.setValue('gender', data?.gender!)
+      form.setValue('phone', data?.phone!)
+      form.setValue('address', data?.address!)
+      form.setValue('degree', data?.degree!)
+      form.setValue('experience', data?.experience!)
+      form.setValue('tag', data?.tag!)
+
+    }
+
+    try {
+      getDataFromDb();
+    } catch (error) {
+      console.error(error)
+    }
+
+  }, [])
+
 
   async function onSubmit(values: TCandidateSchema) {
-    console.log(values);
-    await setDoc(doc(db, 'profile', '5WrNx81gijmQIyyrKpRb'), values, {merge: true})
+    // console.log(values);
+    await setDoc(doc(db, 'profile', session.data?.user?.id!), values, {merge: true});
     router.push('/profile')
   }
-
+  
 
   return (
     <section>
@@ -71,7 +89,7 @@ export default function Candidate() {
             {/* <Uploader /> */}
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+            <form onSubmit={form.handleSubmit(onSubmit)} autoComplete="off" className="space-y-3">
 
               <FormField
                 control={form.control}
@@ -80,7 +98,7 @@ export default function Candidate() {
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Name" {...field} />
+                      <Input type="text" placeholder="Name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -94,14 +112,14 @@ export default function Candidate() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="Email" {...field} />
+                      <Input type="email" placeholder="Email"  {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              <div className="flex gap-3">
+              <div className="flex gap-3 items-center">
 
                 <FormField
                   control={form.control}
@@ -121,10 +139,10 @@ export default function Candidate() {
                   control={form.control}
                   name="gender"
                   render={({ field }) => (
-                    <FormItem className="basis-1/2">
+                    <FormItem className="basis-1/2 h-full">
                       <FormLabel>Gender</FormLabel>
 
-                      <Select onValueChange={field.onChange}>
+                      {/* <Select onValueChange={field.onChange}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder='Select Gender' />
@@ -134,12 +152,18 @@ export default function Candidate() {
                         <SelectContent>
                           <SelectGroup>
                             <SelectLabel>Gender</SelectLabel>
-                            <SelectItem value='male'>Male</SelectItem>
-                            <SelectItem value='female'>Female</SelectItem>
+                            <SelectItem value='male' >Male</SelectItem>
+                            <SelectItem value='female' >Female</SelectItem>
                             <SelectItem value='other'>Other</SelectItem>
                           </SelectGroup>
                         </SelectContent>
-                      </Select>
+                      </Select> */}
+
+                      <select {...field} name="gender" className="block w-full py-[6px] pl-1 h-full rounded-sm bg-background ring-ring border border-muted outline-none focus:border-foreground">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                      </select>
 
                       <FormMessage />
                     </FormItem>
@@ -182,7 +206,7 @@ export default function Candidate() {
                   <FormItem className="py-3">
                     <FormLabel className="w-full flex">Degrees<span className="text-xs text-muted-foreground ml-auto text-right"><IoInformationCircle className='inline' />seperate by comma (,)</span></FormLabel>
                     <FormControl>
-                      <Textarea {...field} placeholder="Degree 1, Degree 2,..." />
+                      <Textarea {...field} placeholder="Degree 1, Degree 2,..."/>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -203,19 +227,19 @@ export default function Candidate() {
                 )}
               />
 
-              {/* <FormField
+              <FormField
                 control={form.control}
-                name="about"
+                name="tag"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>About Me </FormLabel>
+                    <FormLabel className="w-full flex">About Me  <span className="text-xs text-muted-foreground ml-auto text-right"><IoInformationCircle className='inline' />seperate by comma (,)</span> </FormLabel>
                     <FormControl>
-                      <Textarea {...field} placeholder="Type about you in here." />
+                      <Textarea {...field} placeholder="Tags" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
-              /> */}
+              />
               
               {/* <FormField
                 control={form.control}

@@ -17,8 +17,9 @@ import Link from 'next/link';
 const SIGNINURL = '/profile';
 const SIGNOUTURL = '/role'
 
-function Login() {
+export default function Login() {
   const session = useSession();
+  const user = session.data?.user
 
   // async function handleLogin() {
   //   signIn('google', {callbackUrl: SIGNINURL})
@@ -28,7 +29,7 @@ function Login() {
   return (
       <div className="flex items-center justify-center">
         {
-          !session || session.status == 'unauthenticated' ? 
+          !user ? 
           <Button 
             className='bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-400 dark:hover:bg-emerald-500  transition-all font-bold'
           >
@@ -37,39 +38,42 @@ function Login() {
             </Link>
           </Button>
           :
-            session.status == 'loading' ?
-              <div className='w-8 h-8 bg-muted border-foreground border-2 rounded-full animate-pings' />
-              :
-              <>
-                <DropdownMenu>
-                  <DropdownMenuTrigger className='outline-none'>
-                    <Image src={session.data?.user?.image!} width={32} height={32} priority alt="Profile" className='rounded-full border-2 border-foreground' />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <Link href="/profile" prefetch={true} className='w-full'>Profile</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link href="/dashboard" prefetch={true} className='w-full'>Dashboard</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link href='/explore' prefetch={true} className='w-full'>Explore</Link>
-                    </DropdownMenuItem>
-
-                    <DropdownMenuItem>
-                      <Button variant='secondary' size='sm' onClick={() => signOut({callbackUrl: SIGNOUTURL})} className='w-full'>
-                        Log Out
-                      </Button>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </>
-
+            <DropDown user={user} />
         }
       </div>
   )
 }
 
-export default Login
+
+function DropDown({ user }: any) {
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger className='outline-none'>
+          <Image src={user?.image!} width={32} height={32} priority alt="Profile" className='rounded-full border-2 border-foreground' />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <Link href="/profile" prefetch={true} className='w-full'>Profile</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link href="/dashboard" prefetch={true} className='w-full'>Dashboard</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link href='/explore' prefetch={true} className='w-full'>Explore</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link href='/edit' prefetch={true} className='w-full'>Setting</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Button variant='secondary' size='sm' onClick={() => signOut({ callbackUrl: SIGNOUTURL })} className='w-full'>
+              Log Out
+            </Button>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
+  )
+}

@@ -41,18 +41,10 @@ export default async function Profile() {
                     </div>
 
                     <div className="">
-                        <Table>
-                            {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
-                           
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell>Company Name</TableCell>
-                                    <TableCell>Linear</TableCell>
-                                </TableRow>
-                            </TableBody>
-
-                        </Table>
-
+                        <p className="flex bg-muted/30 py-2 border border-muted/40 px-3 my-2 rounded-sm hover:bg-muted/40 min-w-[300px] max-w-[420px]">
+                            <span className="basis-32 capitalize">Location</span>
+                            <span className="grow">No.322, Saint Paul St, Bhamingham, United Kingdom</span>
+                        </p>
                     </div>
 
                     {/* Format CV */}
