@@ -41,8 +41,7 @@ export const { handlers: { GET, POST }, auth, signIn } = NextAuth({
       const doc2 = await getDoc(docRef2)
       const data2:any = doc2.data()
 
-      token.role = data2.role || 'user'
-
+      token.role = data2.role || 'user';
       return token
     },
 
@@ -52,11 +51,10 @@ export const { handlers: { GET, POST }, auth, signIn } = NextAuth({
         session.user.id = token.id
         session.user.role = token.role
         session.user.name = token.name
-
-
       }
       return session
     },
+
 
     // async signIn({profile}:any) {
     //   console.log(profile)

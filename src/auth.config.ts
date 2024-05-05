@@ -6,6 +6,7 @@ export default {
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      allowDangerousEmailAccountLinking: true,
       authorization: {
         params: {
           prompt: "consent",
@@ -13,10 +14,10 @@ export default {
           response_type: "code"
         }
       },
-      // profile(profile) {
-      //   console.log(profile)
-      //   return {role: 'user', ...profile}
-      // }
+      profile(profile) {
+        console.log("Profile >> ",profile)
+        return profile
+      }
     }),
     
   ],
