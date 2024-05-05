@@ -17,7 +17,7 @@ import {
 
 export default async function Profile() {
     const session = await auth();
-    const user = session ? session.user : {}
+    const user =  session?.user
     return (
         <>
             <div className="flex w-full h-screen max-w-7xl mx-auto">
