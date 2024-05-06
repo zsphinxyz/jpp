@@ -23,24 +23,28 @@ function Role() {
 
   const userID = session?.data?.user?.id!
 
-  useEffect(()=>{
+  // useEffect(()=>{
 
-    async function getData() {  
-      const docRef = doc(db, 'users', userID);
-      const docSnap = await getDoc(docRef)
-      const data = docSnap.data()
-      return data
-    }
-    console.log(getData())
+  //   async function getData() {  
+  //     const docRef = doc(db, 'users', userID);
+  //     const docSnap = await getDoc(docRef)
+  //     const data = docSnap.data()
+  //     return data
+  //   }
+  //   console.log(getData())
     
-  }, [])
+  // }, [])
 
   async function CandidateRole() {
     await setDoc(doc(db, 'users', userID), {role: 'candidate'}, {merge: true})
-  }
+    
+    await setDoc(doc(db, 'profile', userID), {name: user.name, email: user.email}, {merge: true});
+    }
+    
+    async function EmployerRole() {
+      await setDoc(doc(db, 'users', userID), {role: 'employer'}, {merge: true})
 
-  async function EmployerRole() {
-    await setDoc(doc(db, 'users', userID), {role: 'employer'}, {merge: true})
+      await setDoc(doc(db, 'profile', userID), {name: user.name, email: user.email}, {merge: true});
   }
 
   return (

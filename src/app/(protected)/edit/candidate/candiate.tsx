@@ -45,7 +45,7 @@ export default function Candidate() {
 
     async function getDataFromDb() {
 
-      const docRef = doc(db, 'profile', '5WrNx81gijmQIyyrKpRb');
+      const docRef = doc(db, 'profile', session.data?.user.id!);
       const docSnap = await getDoc(docRef)
       let data = docSnap.data() as TCandidateSchema
 

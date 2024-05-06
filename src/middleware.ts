@@ -7,7 +7,7 @@ const {auth} = NextAuth(authConfig)
 
 // @ts-ignore
 export default auth ( (req) => {
-    const DEFAULT_REDIRECT_PAGE = '/'
+    const DEFAULT_REDIRECT_PAGE = '/role'
     const {nextUrl} = req;
     const isLoggedIn = !!req.auth;
 
@@ -34,7 +34,6 @@ export default auth ( (req) => {
         return NextResponse.redirect(new URL('/sign-in', req.url));
     }
 
-    
 })
 
 export const config = {

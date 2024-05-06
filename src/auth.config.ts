@@ -14,10 +14,10 @@ export default {
           response_type: "code"
         }
       },
-      profile(profile) {
-        console.log("Profile >> ",profile)
-        return profile
-      }
+      // profile(profile) {
+      //   console.log("Profile >> ",profile)
+      //   return profile
+      // }
     }),
   ],
   // providers: [Google],

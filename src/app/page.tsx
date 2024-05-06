@@ -1,17 +1,17 @@
-import {Roboto} from 'next/font/google'
+import { Roboto } from 'next/font/google'
 import { cn } from "@/lib/utils";
 
 const font = Roboto({
   subsets: ["latin"],
-  weight: ['100', '300','500', '900'],
+  weight: ['100', '300', '500', '900'],
 })
 
 export default function Home() {
   return (
-    <main className={cn(font.className,"flex scroll-smooth min-h-screen flex-col items-center justify-between")}>
+    <main className={cn(font.className, "flex scroll-smooth min-h-screen flex-col items-center justify-between")}>
       <h1 className=" header">Header</h1>
       <section className='scroll-smooth'>
- </section>
+      </section>
     </main>
   );
 }

@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { collection, doc, getDoc, getDocFromCache, getDocs, limit, orderBy, query } from "firebase/firestore";
+import { collection, doc, getDoc, getDocFromCache, getDocs, limit, orderBy, query, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
 
@@ -19,15 +19,19 @@ export default async function Profile() {
   const user = session?.user
 
   async function getData() {
-    const docRef = doc(db, 'profile', user?.id!);
     try {
-      const doc = await getDocFromCache(docRef)
-      const data: any = doc.data()
-      return data
-
+      const docRef = doc(db, 'profile', user?.id!);
+      const docRes = await getDoc(docRef)
+      const data: any = docRes.data()
+      return data;
+      
     } catch (err) {
-      const doc = await getDoc(docRef)
-      const data: any = doc.data()
+
+      await setDoc(doc(db, 'profile', user?.id!), {name: user?.name, email: user?.email}, {merge: true});
+
+      const docRef = doc(db, 'profile', user?.id!);
+      const docRes = await getDoc(docRef)
+      const data: any = docRes.data()
       return data;
     }
   }
@@ -36,6 +40,7 @@ export default async function Profile() {
 
   return (
     <section className="max-w-7xl mx-auto">
+
 
       <div className="flex w-full h-screen max-w-7xl mx-auto">
 
@@ -50,7 +55,7 @@ export default async function Profile() {
               </h1>
               <div className="flex gap-1">
                 {
-                  data.tag.split(',').map((i: string) => (
+                  !!data && data.tag && data.tag.split(',').map((i: string) => (
                     <span key={i} aria-label={i} title={i} className="text-muted-foreground bg-muted rounded-full w-fit px-2 py-1 text-sm cursor-default capitalize">{i}</span>
                   ))
                 }
@@ -64,17 +69,18 @@ export default async function Profile() {
           </div> */}
 
           {
-      Object.entries(data).sort().map( (i:any) => {
-        if (i[0] == 'name') {
-          return;
-    }
-      return(
-        <p className="flex " key={i[0]}>
-          <span className="basis-32 capitalize">{i[0]}</span> 
-          <span className="basis-full">{i[1].toString()}</span>
-        </p>
-      )})
-    } 
+            !!data && Object.entries(data).sort().map((i: any) => {
+              if (i[0] == 'name') {
+                return;
+              }
+              return (
+                <p className="flex " key={i[0]}>
+                  <span className="basis-32 capitalize">{i[0]}</span>
+                  <span className="basis-full">{i[1].toString()}</span>
+                </p>
+              )
+            })
+          }
 
           <div className="flex">
 

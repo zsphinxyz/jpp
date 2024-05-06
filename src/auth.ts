@@ -6,15 +6,6 @@ import { collection, doc as d, getDoc, getDocFromCache, getDocs, limit, orderBy,
 import { db } from "./lib/firebase";
 
 
-declare module 'next-auth' {
-  interface Session {
-    user: {
-      role: string | undefined
-    } & DefaultSession["user"]
-  }
-}
-
-
 export const { handlers: { GET, POST }, auth, signIn } = NextAuth({
   secret: 'LlKq6ZtYbr+hTC073mAmAh9/h2HwMfsFo4hrfCx5mLg=',
   ...authConfig,
@@ -23,29 +14,29 @@ export const { handlers: { GET, POST }, auth, signIn } = NextAuth({
   // debug: true,
 
   callbacks: {
-    async jwt({token}:any) {
+    async jwt({token}) {
       
       token.id = token.sub
 
       // fetch session data from database profile and set session
-      const docRef = d(db, 'profile', token.id);
+      const docRef = d(db, 'profile', token.id! as string);
       const doc = await getDoc(docRef)
-      const data:any = doc.data()
+      const data = doc.data()
 
-      token.name = data.name || token.name
-      token.email = data.email || token.email
+      token.name = data?.name || token.name
+      token.email = data?.email || token.email
 
 
       // fetch id from database users and set session
-      const docRef2 = d(db, 'users', token.id);
+      const docRef2 = d(db, 'users', token.id as string);
       const doc2 = await getDoc(docRef2)
-      const data2:any = doc2.data()
+      const data2 = doc2.data()
 
-      token.role = data2.role || 'user';
+      token.role = data2?.role || 'user';
       return token
     },
 
-    async session({session, token}:any){
+    async session({session, token}){
 
       if (session.user) {
         session.user.id = token.id
@@ -55,11 +46,12 @@ export const { handlers: { GET, POST }, auth, signIn } = NextAuth({
       return session
     },
 
-
-    // async signIn({profile}:any) {
-    //   console.log(profile)
+    //  async signIn({session}: any){
+    //   await setDoc(d(db, 'profile', session.user.id), {name: session.user.name, email: session.user.email}, {merge: true});
     //   return true
-    // }
+    //  }
+    
+
   },
 
   pages: {
