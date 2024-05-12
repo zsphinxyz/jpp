@@ -1,8 +1,8 @@
-import NextAuth, {type DefaultSession } from "next-auth"
+import NextAuth from "next-auth"
 import authConfig from "./auth.config"
 import { firestore } from "./lib/firestore";
 import { FirestoreAdapter } from "@auth/firebase-adapter";
-import { collection, doc as d, getDoc, getDocFromCache, getDocs, limit, orderBy, query, setDoc } from "firebase/firestore";
+import { doc as d, getDoc} from "firebase/firestore";
 import { db } from "./lib/firebase";
 
 

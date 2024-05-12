@@ -10,13 +10,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { collection, doc, getDoc, getDocFromCache, getDocs, limit, orderBy, query, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
 
 export default async function Profile() {
   const session = await auth();
   const user = session?.user
+
 
   async function getData() {
     try {
@@ -51,11 +52,11 @@ export default async function Profile() {
             <Image src={user?.image!} priority width={150} height={150} alt='profile' className="object-cover border-muted border-2 bg-muted" />
             <div className="flex gap-3 flex-col">
               <h1 className="text-5xl font-bold">{user?.name}
-                {/* <span className="text-lg text-muted-foreground block mt-1 font-normal">{user?.email}</span> */}
+                <span className="text-lg text-muted-foreground block mt-1 font-normal">{user?.email}</span>
               </h1>
               <div className="flex gap-1">
                 {
-                  !!data && data.tag && data.tag.split(',').map((i: string) => (
+                  data.tag != '' && data.tag.split(',').map((i: string) => (
                     <span key={i} aria-label={i} title={i} className="text-muted-foreground bg-muted rounded-full w-fit px-2 py-1 text-sm cursor-default capitalize">{i}</span>
                   ))
                 }

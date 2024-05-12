@@ -1,7 +1,5 @@
-import { auth, signIn } from "@/auth"
+import { signIn } from "@/auth"
 import { Button } from "@/components/ui/button"
-import { db } from "@/lib/firebase";
-import { doc, setDoc } from "firebase/firestore";
 import { FcGoogle } from "react-icons/fc";
 
 function SignIn() {

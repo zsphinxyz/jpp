@@ -18,7 +18,6 @@ import UploadcareImage from '@uploadcare/nextjs-loader';
 import { collection, doc, getDoc, getDocs, query, setDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { useRouter } from "next/navigation"
-import { DocumentData } from "firebase-admin/firestore"
 
 
 export default function Candidate() {
