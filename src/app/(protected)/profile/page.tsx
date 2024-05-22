@@ -12,12 +12,12 @@ import {
 } from "@/components/ui/table"
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default async function Profile() {
   const session = await auth();
   const user = session?.user
-
 
   async function getData() {
     try {
@@ -36,12 +36,10 @@ export default async function Profile() {
       return data;
     }
   }
-
   const data = await getData();
 
   return (
     <section className="max-w-7xl mx-auto">
-
 
       <div className="flex w-full h-screen max-w-7xl mx-auto">
 
@@ -54,12 +52,15 @@ export default async function Profile() {
               <h1 className="text-5xl font-bold">{user?.name}
                 <span className="text-lg text-muted-foreground block mt-1 font-normal">{user?.email}</span>
               </h1>
+              
               <div className="flex gap-1">
-                {
-                  data.tag != '' && data.tag.split(',').map((i: string) => (
-                    <span key={i} aria-label={i} title={i} className="text-muted-foreground bg-muted rounded-full w-fit px-2 py-1 text-sm cursor-default capitalize">{i}</span>
-                  ))
-                }
+                <Suspense fallback={<Skeleton className="h-2 min-w-32 max-w-full" />}>
+                  {
+                    data.tag != '' && data.tag.split(',').map((i: string) => (
+                      <span key={i} aria-label={i} title={i} className="text-muted-foreground bg-muted rounded-full w-fit px-2 py-1 text-sm cursor-default capitalize">{i}</span>
+                    ))
+                  }
+                </Suspense>
               </div>
             </div>
           </div>
@@ -69,7 +70,7 @@ export default async function Profile() {
             TODO Markdown Editor and Viewer
           </div> */}
 
-          {
+          {/* {
             !!data && Object.entries(data).sort().map((i: any) => {
               if (i[0] == 'name') {
                 return;
@@ -81,14 +82,18 @@ export default async function Profile() {
                 </p>
               )
             })
-          }
+          } */}
 
-          <div className="flex">
 
-            <p className="flex bg-muted/30 py-2 border border-muted/40 px-3 my-2 rounded-sm hover:bg-muted/40 min-w-[300px] max-w-full">
-              <span className=""></span>
-            </p>
-
+          <div className="flex flex-col gap-1 my-2">
+            <Info c1="Name" c2={data.name} />
+            <Info c1="Email" c2={data.email} />
+            <Info c1="Gender" c2={data.gender} />
+            <Info c1="Date of Birth" c2={data.dob} />
+            <Info c1="Experience" c2={data.experience} />
+            <Info c1="Degree" c2={data.degree} />
+            <Info c1="Phone Number" c2={data.phone} />
+            <Info c1="Address" c2={data.address} />
           </div>
 
 
@@ -99,5 +104,14 @@ export default async function Profile() {
         JSON.stringify(user, null, 4)
       }
     </section>
+  )
+}
+
+function Info({c1, c2}: {c1:string, c2:string}) {
+  return(
+    <div className="flex gap-5 bg-muted/30 py-2 border border-muted/40 px-3 rounded-sm hover:bg-muted/40 min-w-[300px] max-w-full">
+      <p className="w-36">{c1}</p>
+      <p className="">{c2}</p>
+    </div>
   )
 }

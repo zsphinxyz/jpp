@@ -6,7 +6,7 @@ import { doc as d, getDoc} from "firebase/firestore";
 import { db } from "./lib/firebase";
 
 
-export const { handlers: { GET, POST }, auth, signIn } = NextAuth({
+export const { handlers, auth, signIn, signOut } = NextAuth({
   secret: 'LlKq6ZtYbr+hTC073mAmAh9/h2HwMfsFo4hrfCx5mLg=',
   ...authConfig,
   adapter: FirestoreAdapter(firestore),
