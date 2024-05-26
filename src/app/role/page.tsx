@@ -1,21 +1,26 @@
-
+'use client'
 import { Button } from "@/components/ui/button"
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { doc, setDoc } from 'firebase/firestore'
 import { db } from "@/lib/firebase";
-import { redirect } from "next/navigation";
-import { auth } from "@/auth";
+import { useRouter } from "next/navigation";
+
 
 
 async function Role() {
-  const session = await auth();
-  const user = session?.user;
+  // const session = await auth();
+  // const user = session?.user;
 
+  const session = useSession()
+  const user = session.data?.user
+  const router = useRouter();
   const userID = user?.id!
 
-  if (user.role != 'user') {
-    redirect('/profile')
+  if(user?.role != 'user') {
+    user?.role == 'candidate' ? 
+    router.push('/profile') :
+    router.push('/companyProfile')
   }
 
 

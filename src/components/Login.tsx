@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import Link from 'next/link';
 
-const SIGNINURL = '/profile';
 const SIGNOUTURL = '/role'
 
 export default function Login() {
@@ -56,7 +55,7 @@ function DropDown({ user }: any) {
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
-            <Link href="/profile" prefetch={true} className='w-full'>Profile</Link>
+            <Link href={user.role == 'candidate' ? "/profile" : '/companyProfile'} prefetch={true} className='w-full'>Profile</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Link href="/dashboard" prefetch={true} className='w-full'>Dashboard</Link>

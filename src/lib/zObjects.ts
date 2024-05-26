@@ -28,13 +28,21 @@ export const candidateSchema = z.object({
     // })
     // resume: resumeSchema,
 })
-
 export type TCandidateSchema = z.infer<typeof candidateSchema>
 
 
 export const employerSchema = z.object({
     name: strReq,
     email: strReq.email(),
-    phone: strReq,
     location: strReq,
 })
+export type TEmployerSchema = z.infer<typeof employerSchema>
+
+
+export const jobPostSchema = z.object({
+    job: z.string(),
+    salary: z.string(),
+    location: z.string(),
+})
+export type TJobPostSchema = z.infer<typeof jobPostSchema>
+

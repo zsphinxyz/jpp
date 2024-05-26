@@ -47,7 +47,9 @@ export default async function Profile() {
         <div className="w-full p-3">
 
           <div className="flex gap-2 items-center">
-            <Image src={user?.image!} priority width={150} height={150} alt='profile' className="object-cover border-muted border-2 bg-muted" />
+            <Suspense fallback={'Loading...'}>
+              <Image src={user?.image! || '/placeholder.png'} priority width={150} height={150} alt='profile' className="size-[150px] object-cover border-muted border-2 bg-muted" />
+            </Suspense>
             <div className="flex gap-3 flex-col">
               <h1 className="text-5xl font-bold">{user?.name}
                 <span className="text-lg text-muted-foreground block mt-1 font-normal">{user?.email}</span>
@@ -56,9 +58,11 @@ export default async function Profile() {
               <div className="flex gap-1">
                 <Suspense fallback={<Skeleton className="h-2 min-w-32 max-w-full" />}>
                   {
-                    data.tag != '' && data.tag.split(',').map((i: string) => (
+                    data.tag ? data.tag.split(',').map((i: string) => (
                       <span key={i} aria-label={i} title={i} className="text-muted-foreground bg-muted rounded-full w-fit px-2 py-1 text-sm cursor-default capitalize">{i}</span>
                     ))
+                    :
+                    ''
                   }
                 </Suspense>
               </div>
@@ -69,21 +73,6 @@ export default async function Profile() {
           {/* <div className="py-80 text-center bg-muted my-3">
             TODO Markdown Editor and Viewer
           </div> */}
-
-          {/* {
-            !!data && Object.entries(data).sort().map((i: any) => {
-              if (i[0] == 'name') {
-                return;
-              }
-              return (
-                <p className="flex " key={i[0]}>
-                  <span className="basis-32 capitalize">{i[0]}</span>
-                  <span className="basis-full">{i[1].toString()}</span>
-                </p>
-              )
-            })
-          } */}
-
 
           <div className="flex flex-col gap-1 my-2">
             <Info c1="Name" c2={data.name} />
@@ -111,7 +100,7 @@ function Info({c1, c2}: {c1:string, c2:string}) {
   return(
     <div className="flex gap-5 bg-muted/30 py-2 border border-muted/40 px-3 rounded-sm hover:bg-muted/40 min-w-[300px] max-w-full">
       <p className="w-36">{c1}</p>
-      <p className="">{c2}</p>
+      <p className="">{c2 ? c2 : <span className="text-muted-foreground/50 select-none">Not provided</span> }</p>
     </div>
   )
 }

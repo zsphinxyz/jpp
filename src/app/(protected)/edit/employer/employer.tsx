@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from "@/components/ui/button"
 import {
     Card,
@@ -7,12 +9,47 @@ import {
     CardHeader,
     CardTitle,
   } from "@/components/ui/card"
-  import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+
+import { Input } from "@/components/ui/input"
+import { db } from "@/lib/firebase"
+import { employerSchema, TEmployerSchema } from "@/lib/zObjects"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { doc, setDoc } from "firebase/firestore"
+import { useSession } from "next-auth/react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useForm } from "react-hook-form"
 
 
 function Employer() {
+
+  const session = useSession();
+  const router = useRouter()
+
+  const form = useForm<TEmployerSchema>({
+    resolver: zodResolver(employerSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      location: ''
+    }
+  });
+
+  async function onSubmit(values:TEmployerSchema) {
+    await setDoc(doc(db, 'profile', session.data?.user?.id!), values, {merge: true});
+    router.push('/companyProfile')
+  }
+
   return (
     <section>
         <Card className="shadow-sm shadow-muted w-[400px] mx-auto">
@@ -21,40 +58,57 @@ function Employer() {
           <CardDescription className="text-center">Enter your infos</CardDescription>
         </CardHeader>
         <CardContent>
-          
-          {/* <form className="w-full">
-            <div className="space-y-4">
 
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="username">Company Name</Label>
-                <Input id="username" autoFocus name="username" placeholder="Enter Company Name ..." />
-              </div>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} autoComplete="off" className="space-y-3">
 
+              <FormField
+                control={form.control}
+                name='name'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Company Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Company Name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="email">Company Email</Label>
-                <Input id="email" name="email" placeholder="Enter Your Company Email ..." />
-              </div>
+              <FormField
+                control={form.control}
+                name='email'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Company Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Company Email" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="phone">Phone Number</Label>
-                <Input type="tel" id="phone" name="phone" placeholder="Enter Your Phone Number ..." />
-              </div>
+              <FormField
+                control={form.control}
+                name='location'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Company Location</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Company Location" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="location">Location</Label>
-                <Input id="location" name="location" placeholder="Enter Your location ..." />
-              </div>
+              <Button type="submit" className="w-full mt-2">Submit</Button>
 
-              <div className="flex flex-col gap-2">
-                <Button asChild className="cursor-pointer mt-3">
-                  <Input type='submit' name="submit" value="Submit" />
-                </Button>
-              </div>
-
-            </div>
-          </form> */}
-
+            </form>
+          </Form>
+         
         </CardContent>
         <CardFooter className="text-sm text-center w-full flex justify-center">
           Footer

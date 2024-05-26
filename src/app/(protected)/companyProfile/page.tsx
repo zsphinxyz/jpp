@@ -2,27 +2,33 @@ import { auth } from "@/auth"
 import { EmployerJobTag } from "@/components/JobTag";
 import Image from "next/image";
 import Link from "next/link";
-import { FaFacebook, FaGlobe } from "react-icons/fa";
 import JobItem from "../explore/jobItem";
 import {Separator} from '@/components/ui/separator'
-import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-  } from "@/components/ui/table"
+import { Button } from "@/components/ui/button";
+import { query, orderBy, limit, collection, where, getDocs } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { revalidatePath } from "next/cache";
 
 export default async function Profile() {
     const session = await auth();
     const user =  session?.user
+    let jobPosts:any= []
+
+    const jobRef = collection(db, 'jobs')
+    const q = query(jobRef, where('by', '==', user.id)); 
+    
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach( (doc) => {
+        jobPosts = [...jobPosts, {...doc.data(), jobId: doc.id}]
+        // console.log(doc.id, '=>', doc.data())
+    } )
+    
+    revalidatePath('/')
+
     return (
         <>
             <div className="flex w-full h-screen max-w-7xl mx-auto">
 
-                {/* Right Section */}
                 <div className="p-3 w-full">
 
                     {/* Cover Photo */}
@@ -47,32 +53,25 @@ export default async function Profile() {
                         </p>
                     </div>
 
+                    <Button className="my-5 font-bold"><Link href='/create'>Create A Post</Link></Button>
+                    
+                    <section className="space-y-3">
+                        {
+                            jobPosts.map( (i:any) => (
+                                <JobItem key={i.jobId} companyName="ZJPP" tag={<EmployerJobTag tag="Hired" />} jobType="Full-time" link={`job/${i.jobId}`} location={i.location} postedAt="2 hours" salary={i.salary} title={i.job} locationType='Remote' />
+                            ))
+                        }
+                    </section>
+
                     {/* Format CV */}
-                    <div className="py-80 text-center bg-muted my-3">
+                    {/* <div className="py-80 text-center bg-muted my-3">
                         TODO Markdown Editor and Viewer
-                    </div>
+                    </div> */}
 
-                    {/* Posted Jobs */}
-                    <div className="my-3">
+                    <button className="text-center mt-3 w-full text-muted-foreground hover:text-foreground transition-colors">... Load More ...</button>
+                    <Separator className="my-3" />
 
-                        
-                        <h2 className="text-xl underline underline-offset-4 ml-1">Available Jobs</h2>
-                        <div className="flex flex-col gap-2 my-3">
-                            <JobItem companyName="ZJPP" tag={<EmployerJobTag tag="Hired" />} jobType="Full-time" link="" location="Thaketa, Yangon" postedAt="2 hours" salary="200,000" title="Software Developer" locationType='Remote' />
-                        </div>
 
-                        <Separator className="my-10" />
-
-                        <h2 className="text-xl underline underline-offset-4 ml-1">Posted Jobs</h2>
-                        <div className="flex flex-col gap-2 my-3">
-                            <JobItem companyName="ZJPP" tag={<EmployerJobTag tag="Hired" />} jobType="Full-time" link="" location="Thaketa, Yangon" postedAt="2 hours" salary="200,000" title="Software Developer" locationType='Remote' />
-                            <JobItem companyName="ZJPP" tag={<EmployerJobTag tag="Open" />} jobType="Full-time" link="" location="Thaketa, Yangon" postedAt="2 hours" salary="200,000" title="Software Developer" locationType='Remote' />
-                            <JobItem companyName="ZJPP" tag={<EmployerJobTag tag="Expired" />} jobType="Full-time" link="" location="Thaketa, Yangon" postedAt="2 hours" salary="200,000" title="Software Developer" locationType='Remote' />
-
-                            <button className="text-center text-muted-foreground hover:text-foreground transition">... Load More ...</button>
-                        </div>
-
-                    </div>
 
                 </div>
 
