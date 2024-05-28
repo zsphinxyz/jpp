@@ -73,7 +73,7 @@ export default async function Job({params}:{params: {id: string}}) {
         </CardHeader>
         <CardContent>
           <h1 className="font-bold mb-1">Description</h1>
-          <p className="text-sm text-muted-foreground">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quaerat animi unde, facilis quis repudiandae autem hic rem qui repellendus excepturi rerum vel placeat itaque dolorum quas pariatur, nam earum.</p>
+          <p className="text-sm text-muted-foreground">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam quaerat animi unde, facilis quis repudiandae autem hic rem qui repellendus excepturi rerum vel placeat itaque dolorum quas pariatur, nam earum...</p>
           <h3 className="font-bold mt-3">Requirements</h3>
           <ol className="list-decimal ml-4 my-2 text-sm *:p-1">
             <li>Req 1</li>

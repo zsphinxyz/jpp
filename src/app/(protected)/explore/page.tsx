@@ -68,7 +68,7 @@ export default async function Explore() {
         
         {
           jobPosts.map( (i,j):any => (
-            <JobItem key={j} companyName={i.company} jobType="Part-time" link={'job/'+i.jobId} location={i.location} postedAt="2 days" salary={i.salary} isVarified title={i.position} locationType='Hybrid' />
+            <JobItem key={j} companyName={i.company} jobType="Full-time" link={'job/'+i.jobId} location={i.location} postedAt={new Date(parseInt(i.createdAt)).toDateString()} salary={i.salary} isVarified title={i.position} locationType='on Site' />
             
           ))
         }
