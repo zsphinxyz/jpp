@@ -36,7 +36,7 @@ export default function Create() {
     const form = useForm({
         resolver: zodResolver(jobPostSchema),
         defaultValues: {
-            job: '',
+            position: '',
             salary: '',
             location: ''
         }
@@ -44,7 +44,7 @@ export default function Create() {
 
     async function onSubmit(values:TJobPostSchema) {
         try {
-            await addDoc(collection(db, 'jobs'), {...values, by: session.data?.user.id!, createdAt: Date.now()})  
+            await addDoc(collection(db, 'jobs'), {...values, by: session.data?.user.id!, company: session.data?.user.name, createdAt: Date.now()})  
             router.push('/companyProfile')
         } catch (error) {
             console.error(error)
@@ -64,7 +64,7 @@ export default function Create() {
 
                 <FormField
                     control={form.control}
-                    name="job"
+                    name="position"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Job Position</FormLabel>

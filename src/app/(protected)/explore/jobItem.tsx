@@ -23,10 +23,10 @@ type JobItem = {
 export default function JobItem({link,img,title,companyName,salary,jobType,location,locationType,tag,postedAt, isVarified}:JobItem) {
   return (
       <Link href={link} className="w-full bg-muted/50 rounded-xl border-muted border p-2 hover:bg-muted/70 flex gap-3">
-        <div className="bg-white">
+        <div className="bg-white rounded-l-[10px]">
             {
              img ?
-                <Image src={img} alt="placeholder" width={100} height={100} className="object-contain h-full" /> :
+                <Image src={img} alt="placeholder" width={100} height={100} className="object-contain h-full rounded-l-xl" /> :
                 <Image src="/placeholder.png" alt="placeholder" width={100} height={100} className="object-contain h-full" />
             }
         </div>
@@ -57,7 +57,7 @@ export default function JobItem({link,img,title,companyName,salary,jobType,locat
         <div className="hidden sm:flex flex-col justify-between text-xs py-2 text-muted-foreground ml-auto">
              <p className="bg-muted px-1 py-0.5 w-fit rounded-md">{locationType}</p>
             <p className="">
-                <LuClock9 className="inline" /> {postedAt} ago
+                <LuClock9 className="inline" /> {postedAt}
             </p>
         </div>
       </Link>

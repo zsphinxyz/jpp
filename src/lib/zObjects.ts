@@ -40,7 +40,7 @@ export type TEmployerSchema = z.infer<typeof employerSchema>
 
 
 export const jobPostSchema = z.object({
-    job: z.string(),
+    position: z.string(),
     salary: z.string(),
     location: z.string(),
 })

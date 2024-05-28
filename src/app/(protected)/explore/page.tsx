@@ -5,8 +5,24 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Switch } from "@/components/ui/switch";
 import JobItem from "./jobItem";
 import { EmployerJobTag, UrgerntTag } from "@/components/JobTag";
+import { collection, getDocs, limit, query, where } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { auth } from "@/auth";
 
-export default function Explore() {
+export default async function Explore() {
+  const session = await auth();
+  const user = session?.user
+
+  const jobRef = collection(db, 'jobs')
+  const q = query(jobRef, limit(3)); 
+  let jobPosts:any[] = [];
+    
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach( (doc) => {
+    jobPosts = [...jobPosts, {...doc.data(), jobId: doc.id}]
+    // console.log(doc.id, '=>', doc.data())
+  })
+
   return (
     <section className="flex flex-col md:flex-row gap-3 lg:gap-5 p-3 max-w-7xl mx-auto">
 
@@ -47,8 +63,17 @@ export default function Explore() {
       <div className="basis-2/3">
         <h1 className="text-2xl font-bold mb-2">Jobs</h1>
         <div className="flex flex-col gap-3">
-          <JobItem companyName="ZJPP" tag={<UrgerntTag />}  jobType="Full-time" link="" location="Thaketa, Yangon" postedAt="2 hours" salary="200,000"  title="Software Developer" locationType='Remote' />
-          <JobItem companyName="Linear Co.Ltd"  jobType="Part-time" link="" location="Hlaing, Yangon" postedAt="2 days" salary="300,000" isVarified title="Full Stack Developer" locationType='Hybrid' />
+          {/* <JobItem companyName="ZJPP" tag={<UrgerntTag />}  jobType="Full-time" link="" location="Thaketa, Yangon" postedAt="2 hours" salary="200,000"  title="Software Developer" locationType='Remote' />
+          <JobItem companyName="Linear Co.Ltd"  jobType="Part-time" link="" location="Hlaing, Yangon" postedAt="2 days" salary="300,000" isVarified title="Full Stack Developer" locationType='Hybrid' /> */}
+        
+        {
+          jobPosts.map( (i,j):any => (
+            <JobItem key={j} companyName={i.company} jobType="Part-time" link={'job/'+i.jobId} location={i.location} postedAt="2 days" salary={i.salary} isVarified title={i.position} locationType='Hybrid' />
+            
+          ))
+        }
+          
+        
         </div>
       </div>
 

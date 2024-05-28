@@ -58,7 +58,7 @@ export default async function Profile() {
                     <section className="space-y-3">
                         {
                             jobPosts.map( (i:any) => (
-                                <JobItem key={i.jobId} companyName="ZJPP" tag={<EmployerJobTag tag="Hired" />} jobType="Full-time" link={`job/${i.jobId}`} location={i.location} postedAt="2 hours" salary={i.salary} title={i.job} locationType='Remote' />
+                                <JobItem key={i.jobId} companyName={i.company} tag={<EmployerJobTag tag="Hired" />} jobType="Full-time" link={`job/${i.jobId}`} location={i.location} postedAt={new Date(parseInt(i.createdAt)).toDateString()} salary={i.salary} title={i.position} locationType='Remote' />
                             ))
                         }
                     </section>
