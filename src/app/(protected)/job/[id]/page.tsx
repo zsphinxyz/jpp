@@ -84,7 +84,7 @@ export default async function Job({params}:{params: {id: string}}) {
           </ol>
         </CardContent>
         <CardFooter className="flex flex-col gap-2">
-          <p className="w-full block text-sm text-muted-foreground text-right "> Applications {res.candidates.length} people</p>
+          <p className="w-full block text-sm text-muted-foreground text-right "> {res.candidates ? res.candidates.length : '0'} people applied</p>
           <Button type='submit' className="w-full block" disabled={applied}>{applied ? 'Applied' : 'Apply Now'}</Button>
         </CardFooter>
       </Card>
