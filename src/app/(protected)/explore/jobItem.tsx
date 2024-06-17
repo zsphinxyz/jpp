@@ -26,8 +26,8 @@ export default function JobItem({link,img,title,companyName,salary,jobType,locat
         <div className="bg-white rounded-l-[10px]">
             {
              img ?
-                <Image src={img} alt="placeholder" width={100} height={100} className="object-contain h-full rounded-l-xl" /> :
-                <Image src="/placeholder.png" alt="placeholder" width={100} height={100} className="object-contain h-full" />
+                <Image src={img} alt="placeholder" width={100} height={100} className="object-contain h-full rounded-l-xl shrink-0" /> :
+                <Image src="/placeholder.png" alt="placeholder" width={100} height={100} className="object-contain h-full shrink-0" />
             }
         </div>
 
@@ -51,7 +51,6 @@ export default function JobItem({link,img,title,companyName,salary,jobType,locat
                 <MdLocationPin className="inline mr-0.5" />
                 <span>{location}</span>
             </p>
-
         </div>
 
         <div className="hidden sm:flex flex-col justify-between text-xs py-2 text-muted-foreground ml-auto">

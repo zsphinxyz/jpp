@@ -55,7 +55,7 @@ export default async function Explore() {
           <Switch /> Local
         </label>
 
-        <Button className="w-full font-bold ">Search</Button>
+        <Button className="w-full ">Search</Button>
 
       </div>
 

@@ -77,7 +77,7 @@
     @apply select-none;
   }
   .header{
-    @apply text-2xl font-bold text-foreground;
+    @apply text-2xl font-bold text-foreground text-center my-1;
   }
 }
 

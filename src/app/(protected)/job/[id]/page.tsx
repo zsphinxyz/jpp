@@ -14,61 +14,65 @@ import {
 } from "@/components/ui/card"
 
 
-
 export default async function Job({params}:{params: {id: string}}) {
   const session = await auth();
   const user = session?.user;
   let applied = false
 
+    // fetch data from jobs database
   const jobDocRef = doc(db, 'jobs', params.id);
-  const docSnap = await getDoc(jobDocRef);
+  const jobRes = (await getDoc(jobDocRef)).data()!;
   
-  const res = (await getDoc(jobDocRef)).data()!;
-  const candidates = res.candidates || ''
-  const company = res.company
-
-  
+    // fetch data from profile database
   const candidateJobRef = doc(db, 'profile', user.id);
-  const appliedJobs = (await getDoc(candidateJobRef)).data()?.appliedJobs || []
+  const profilejobRes = (await getDoc(candidateJobRef)).data()!
 
-  // console.log('AppliedJobs', Object.keys(appliedJobs[0]))
-  // console.log('Filter', appliedJobs.filter( i => i == 'KXdCKSTBy6zxwQ4DbyyU' ))
+    // fetch data from app database
+  // const appRef = doc(db, 'app', params.id);
+  // const appRes = (await getDoc(candidateJobRef)).data()!
 
-  appliedJobs.map( (i:any) => {
-    const [appliedJobId] = Object.keys(i)
-    if (appliedJobId == params.id) {
+  profilejobRes.jobs.map( (i:string) => {
+    if (i == params.id) {
       applied = true
     }
   })
+
+  // appliedJobs && appliedJobs.map( (i:any) => {
+  //   const [appliedJobId] = Object.keys(i)
+  //   if (appliedJobId == params.id) {
+  //     applied = true
+  //   }
+  // })
 
 
   async function applyJob() {
     'use server'
 
-    const jobValues = { [user.id]: {name: user.name, interview: false } };
-    await setDoc(doc(db, 'jobs', params.id), {candidates: [...candidates, jobValues] }, {merge: true});
+    const countRes = jobRes.count + 1
+    await setDoc(doc(db, 'jobs', params.id), {count: countRes}, {merge: true});  // add one to count
 
-    const candidateValues = {[params.id]: {name: company, interview: false}}
-    await setDoc(doc(db, 'profile', user.id), {appliedJobs: [...candidates, candidateValues] }, {merge: true});
+    await setDoc(doc(db, 'profile', user.id), {jobs: [...profilejobRes.jobs || '', params.id] }, {merge: true});  // add this job id into profile job list
 
+    const appValues =  {name: user.name, interview: false}
+    await setDoc(doc(db, 'app', params.id), {[user.id]: appValues }, {merge: true});
   }
 
   revalidatePath('/')
   
   return (
     <main>
-      {/* <pre>
-        {
-          JSON.stringify(docSnap.data(), null, 2)
-        }
-      </pre> */}
+      <pre>
+        {/* {
+          JSON.stringify(jobRes, null, 2)
+        } */}
+      </pre>
 
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
-          <CardTitle className="text-2xl">{res.position}</CardTitle>
+          <CardTitle className="text-2xl">{jobRes.position}</CardTitle>
           <CardDescription>
-            {res.company} {' ● '}
-            {res.location}
+            {jobRes.company} {' ● '}
+            {jobRes.location}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -84,15 +88,18 @@ export default async function Job({params}:{params: {id: string}}) {
           </ol>
         </CardContent>
         <CardFooter className="flex flex-col gap-2">
-          <p className="w-full block text-sm text-muted-foreground text-right "> {res.candidates ? res.candidates.length : '0'} people applied</p>
-          <Button type='submit' className="w-full block" disabled={applied}>{applied ? 'Applied' : 'Apply Now'}</Button>
+          <p className="w-full block text-sm text-muted-foreground text-right "> {jobRes.count} people applied</p>
+          <form action={applyJob} className="w-full">
+            {
+              user.role != 'employer' && 
+              <Button type='submit' className="w-full block" disabled={applied}>{applied ? 'Applied' : 'Apply Now'}</Button>
+            }
+          </form>
         </CardFooter>
       </Card>
 
 
       
-      <form action={applyJob}>
-      </form>
 
     </main>
   )

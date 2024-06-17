@@ -14,10 +14,15 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { redirect } from "next/navigation";
 
 export default async function Profile() {
   const session = await auth();
   const user = session?.user
+
+  if (user.role != 'candidate') {
+    redirect('/companyProfile')
+  }
 
   async function getData() {
     try {
@@ -89,9 +94,9 @@ export default async function Profile() {
         </div>
 
       </div>
-      {
+      {/* {
         JSON.stringify(user, null, 4)
-      }
+      } */}
     </section>
   )
 }

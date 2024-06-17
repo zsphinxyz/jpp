@@ -8,10 +8,16 @@ import { Button } from "@/components/ui/button";
 import { query, orderBy, limit, collection, where, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export default async function Profile() {
     const session = await auth();
     const user =  session?.user
+
+    if (user.role != 'employer') {
+        redirect('/profile')
+    }
+
     let jobPosts:any= []
 
     const jobRef = collection(db, 'jobs')
