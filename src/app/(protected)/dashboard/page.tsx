@@ -33,7 +33,8 @@ export default async function Dashboard() {
             const jobRes = (await getDoc(jobDocRef)).data()!;
 
             return(
-             <JobItem 
+             <JobItem
+              key={j} 
               companyName={jobRes.company} 
               tag={<CandidateJobTag tag="Success" />} 
               jobType="Part-time"
