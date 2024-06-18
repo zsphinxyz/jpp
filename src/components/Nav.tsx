@@ -15,7 +15,7 @@ export default function Nav() {
       <div className="flex gap-3 items-center">
         <Link href='/'>About</Link>
         <Link href='/'>FAQs</Link>
-        <Link href='/'>Catagories</Link>
+        <Link href='/'>Categories</Link>
       </div>
 
       <div className="flex gap-2">

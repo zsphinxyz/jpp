@@ -44,7 +44,7 @@ export default function JobPostForm() {
 
     async function onSubmit(values:TJobPostSchema) {
         try {
-            await addDoc(collection(db, 'jobs'), {...values, by: session.data?.user.id!, company: session.data?.user.name, createdAt: Date.now()})  
+            await addDoc(collection(db, 'jobs'), {...values, by: session.data?.user.id!, company: session.data?.user.name, createdAt: Date.now()})  // save to jobs
             router.push('/companyProfile')
         } catch (error) {
             console.error(error)

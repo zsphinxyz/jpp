@@ -48,7 +48,7 @@ function DropDown({ user }: any) {
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger className='outline-none'>
+        <DropdownMenuTrigger title={user.email} className='outline-none'>
           <Image src={user?.image!} width={32} height={32} priority alt="Profile" className='rounded-full border-2 border-foreground' />
         </DropdownMenuTrigger>
         <DropdownMenuContent>

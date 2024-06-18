@@ -27,35 +27,38 @@ export default async function Explore() {
     <section className="flex flex-col md:flex-row gap-3 lg:gap-5 p-3 max-w-7xl mx-auto">
 
       {/* Side Bar */}
-      <div className="basis-1/3 border border-muted rounded-lg p-3 space-y-5">
+      <div className="basis-1/3 border border-muted rounded-lg p-3">
 
-        <Input type="search" placeholder="Search Jobs, Location or Company Name..." />
+        <form action="" className="space-y-5">
+          <Input type="search" placeholder="Search Jobs, Location or Company Name..." />
 
-        <select name="" id="" className="w-full bg-background outline-none ring-1 ring-muted focus-within:ring-ring px-2 py-1">
-          <option value="">All Location</option>
-          <option value="" className="">Hlaing</option>
-          <option value="" className="">Nay Pyi Taw</option>
-          <option value="" className="">Hlaing</option>
-          <option value="" className="">Hledan</option>
-        </select>
+          <select name="location" id="location" className="w-full bg-background outline-none ring-1 ring-muted focus-within:ring-ring px-2 py-1">
+            <option value="all">All Location</option>
+            <option value="haling" className="">Hlaing</option>
+            <option value="naypyitaw" className="">Nay Pyi Taw</option>
+            <option value="hlaing" className="">Hlaing</option>
+            <option value="heldan" className="">Hledan</option>
+          </select>
 
-        <select name="" id="" className="w-full bg-background outline-none ring-1 ring-muted focus-within:ring-ring px-2 py-1">
-          <option value="">Any Jobs</option>
-          <option value="" className="">Developer</option>
-          <option value="" className="">Accountant</option>
-          <option value="" className="">Engineer</option>
-          <option value="" className="">Office</option>
-        </select>
+          <select name="jobs" id="jobs" className="w-full bg-background outline-none ring-1 ring-muted focus-within:ring-ring px-2 py-1">
+            <option value="">Any Jobs</option>
+            <option value="" className="">Developer</option>
+            <option value="" className="">Accountant</option>
+            <option value="" className="">Engineer</option>
+            <option value="" className="">Office</option>
+          </select>
 
-        <label className="select-none block"> 
-          <Checkbox /> Remote Jobs
-        </label>
+          <label className="select-none block">
+            <Checkbox /> Remote Jobs
+          </label>
 
-        <label className="select-none block"> 
-          <Switch /> Local
-        </label>
+          <label className="select-none block">
+            <Switch /> Local
+          </label>
 
-        <Button className="w-full ">Search</Button>
+          <Button className="w-full ">Search</Button>
+          {/* <Link className="w-full p-2 bg-muted block text-center" href='?thiha'>Search</Link> */}
+        </form>
 
       </div>
 

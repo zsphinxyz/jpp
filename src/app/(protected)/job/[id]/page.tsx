@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button"
 import { db } from "@/lib/firebase"
-import {  doc, getDoc, setDoc } from "firebase/firestore"
+import {  doc, DocumentData, getDoc, setDoc } from "firebase/firestore"
 import { revalidatePath } from "next/cache";
 
 import {
@@ -12,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import JobApplyers from "./jobApplyers";
 
 
 export default async function Job({params}:{params: {id: string}}) {
@@ -27,22 +28,14 @@ export default async function Job({params}:{params: {id: string}}) {
   const candidateJobRef = doc(db, 'profile', user.id);
   const profilejobRes = (await getDoc(candidateJobRef)).data()!
 
-    // fetch data from app database
-  // const appRef = doc(db, 'app', params.id);
-  // const appRes = (await getDoc(candidateJobRef)).data()!
 
-  profilejobRes.jobs.map( (i:string) => {
-    if (i == params.id) {
-      applied = true
-    }
-  })
-
-  // appliedJobs && appliedJobs.map( (i:any) => {
-  //   const [appliedJobId] = Object.keys(i)
-  //   if (appliedJobId == params.id) {
-  //     applied = true
-  //   }
-  // })
+  if (user.role == 'candidate'){
+    profilejobRes.jobs.map( (i:string) => {
+      if (i == params.id) {
+        applied = true
+      }
+    })
+  }
 
 
   async function applyJob() {
@@ -58,16 +51,10 @@ export default async function Job({params}:{params: {id: string}}) {
   }
 
   revalidatePath('/')
-  
   return (
-    <main>
-      <pre>
-        {/* {
-          JSON.stringify(jobRes, null, 2)
-        } */}
-      </pre>
+    <main className="max-w-7xl mx-auto">
 
-      <Card className="max-w-2xl mx-auto">
+      <Card className="max-w-2xl mx-auto my-3">
         <CardHeader>
           <CardTitle className="text-2xl">{jobRes.position}</CardTitle>
           <CardDescription>
@@ -89,17 +76,22 @@ export default async function Job({params}:{params: {id: string}}) {
         </CardContent>
         <CardFooter className="flex flex-col gap-2">
           <p className="w-full block text-sm text-muted-foreground text-right "> {jobRes.count} people applied</p>
-          <form action={applyJob} className="w-full">
             {
               user.role != 'employer' && 
-              <Button type='submit' className="w-full block" disabled={applied}>{applied ? 'Applied' : 'Apply Now'}</Button>
+                <form action={applyJob} className="w-full">
+                  <Button type='submit' className="w-full block" disabled={applied}>{applied ? 'Applied' : 'Apply Now'}</Button>
+                </form>
             }
-          </form>
         </CardFooter>
       </Card>
+    
+      {
+        jobRes.by == user.id  &&
+        <section className="max-w-2xl mx-auto">
+            <JobApplyers jobid={params.id} />
+        </section>
+      }
 
-
-      
 
     </main>
   )

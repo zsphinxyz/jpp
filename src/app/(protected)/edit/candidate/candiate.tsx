@@ -255,6 +255,7 @@ export default function Candidate() {
               /> */}
                               
               <Button type="submit" className="w-full mt-2">Submit</Button>
+              <Button variant='ghost' type="submit" className="w-full mt-2">Cancel</Button>
             </form>
           </Form>  
 
