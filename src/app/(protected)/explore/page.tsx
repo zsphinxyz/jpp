@@ -9,9 +9,12 @@ import { collection, getDocs, limit, query, where } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { auth } from "@/auth";
 
-export default async function Explore() {
+export default async function Explore({searchParams}:{searchParams: {[key:string]:string | string [] | undefined} }) {
   const session = await auth();
   const user = session?.user
+
+  const location = searchParams.location
+  console.log(location)
 
   const jobRef = collection(db, 'jobs')
   const q = query(jobRef, limit(3)); 
@@ -34,18 +37,18 @@ export default async function Explore() {
 
           <select name="location" id="location" className="w-full bg-background outline-none ring-1 ring-muted focus-within:ring-ring px-2 py-1">
             <option value="all">All Location</option>
-            <option value="haling" className="">Hlaing</option>
-            <option value="naypyitaw" className="">Nay Pyi Taw</option>
-            <option value="hlaing" className="">Hlaing</option>
-            <option value="heldan" className="">Hledan</option>
+            <option value="haling">Hlaing</option>
+            <option value="naypyitaw">Nay Pyi Taw</option>
+            <option value="hlaing">Hlaing</option>
+            <option value="heldan">Hledan</option>
           </select>
 
           <select name="jobs" id="jobs" className="w-full bg-background outline-none ring-1 ring-muted focus-within:ring-ring px-2 py-1">
-            <option value="">Any Jobs</option>
-            <option value="" className="">Developer</option>
-            <option value="" className="">Accountant</option>
-            <option value="" className="">Engineer</option>
-            <option value="" className="">Office</option>
+            <option value="any">Any Jobs</option>
+            <option value="dev">Developer</option>
+            <option value="acc">Accountant</option>
+            <option value="engineer">Engineer</option>
+            <option value="office">Office</option>
           </select>
 
           <label className="select-none block">
@@ -56,8 +59,8 @@ export default async function Explore() {
             <Switch /> Local
           </label>
 
-          <Button className="w-full ">Search</Button>
-          {/* <Link className="w-full p-2 bg-muted block text-center" href='?thiha'>Search</Link> */}
+          {/* <Button className="w-full ">Search</Button> */}
+          <Link className="w-full p-2 bg-muted block text-center" href={`?location=${location}`}>Search</Link>
         </form>
 
       </div>

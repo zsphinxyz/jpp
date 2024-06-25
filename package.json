@@ -8,6 +8,9 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "keywords":[
+    "job", "jobseek"
+  ],
   "dependencies": {
     "@auth/core": "^0.26.3",
     "@auth/firebase-adapter": "^1.6.0",

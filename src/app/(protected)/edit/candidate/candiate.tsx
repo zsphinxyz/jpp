@@ -44,19 +44,20 @@ export default function Candidate() {
 
     async function getDataFromDb() {
 
-      const docRef = doc(db, 'profile', session.data?.user.id!);
+      const docRef = doc(db, 'profile', session.data?.user.id);
       const docSnap = await getDoc(docRef)
       let data = docSnap.data() as TCandidateSchema
+      console.log('Data>>>>', data)
 
-      form.setValue('name', data?.name!)
-      form.setValue('email', data?.email!)
-      form.setValue('dob', data?.dob!)
-      form.setValue('gender', data?.gender!)
-      form.setValue('phone', data?.phone!)
-      form.setValue('address', data?.address!)
-      form.setValue('degree', data?.degree!)
-      form.setValue('experience', data?.experience!)
-      form.setValue('tag', data?.tag!)
+      form.setValue('name', data?.name)
+      form.setValue('email', data?.email)
+      form.setValue('dob', data?.dob)
+      form.setValue('gender', data?.gender)
+      form.setValue('phone', data?.phone)
+      form.setValue('address', data?.address)
+      form.setValue('degree', data?.degree)
+      form.setValue('experience', data?.experience)
+      form.setValue('tag', data?.tag)
 
     }
 
